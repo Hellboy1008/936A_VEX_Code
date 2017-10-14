@@ -141,10 +141,8 @@ task autonomous()
 // You must modify the code to add your own robot specific commands here.
 //
 /////////////////////////////////////////////////////////////////////////////////////////
-
-task usercontrol()
+task base()
 {
-
 	int channelvar_one = 0;
 	int channelvar_three = 0;
 	int channelvar_four = 0;
@@ -181,7 +179,12 @@ task usercontrol()
 		motor[backRight] = channelvar_three - channelvar_four - channelvar_one;
 		motor[frontLeft]  = channelvar_three + channelvar_four - channelvar_one;
 		motor[backLeft]  = channelvar_three + channelvar_four + channelvar_one;
+	}
+}
 
+task arm()
+{
+	while (true){
 		while(vexRT[Btn5U]== 1){
 			armUp();
 		}
@@ -189,6 +192,12 @@ task usercontrol()
 			armDown();
 		}
 		stopArm();
+	}
+}
+
+task claw()
+{
+	while (true){
 		while(vexRT[Btn6U] == 1){
 			clawO();
 		}
@@ -196,5 +205,15 @@ task usercontrol()
 			clawC();
 		}
 		clawS();
+	}
+}
+
+task usercontrol()
+{
+	startTask(base);
+	startTask(arm);
+	startTask(claw);
+	while (true){
+		wait1Msec(1);
 	}
 }

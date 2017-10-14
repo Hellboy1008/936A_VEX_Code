@@ -34,7 +34,7 @@ void clawS(){
 	motor[clawOpen] = 0;
 }
 
-task main()
+task base()
 {
 	int channelvar_one = 0;
 	int channelvar_three = 0;
@@ -72,7 +72,12 @@ task main()
 		motor[backRight] = channelvar_three - channelvar_four - channelvar_one;
 		motor[frontLeft]  = channelvar_three + channelvar_four - channelvar_one;
 		motor[backLeft]  = channelvar_three + channelvar_four + channelvar_one;
+	}
+}
 
+task arm()
+{
+	while (true){
 		while(vexRT[Btn5U]== 1){
 			armUp();
 		}
@@ -80,6 +85,12 @@ task main()
 			armDown();
 		}
 		stopArm();
+	}
+}
+
+task claw()
+{
+	while (true){
 		while(vexRT[Btn6U] == 1){
 			clawO();
 		}
@@ -87,5 +98,15 @@ task main()
 			clawC();
 		}
 		clawS();
+	}
+}
+
+task main()
+{
+	startTask(base);
+	startTask(arm);
+	startTask(claw);
+	while (true){
+		wait1Msec(1);
 	}
 }
